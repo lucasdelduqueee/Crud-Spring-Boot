@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="pt-br"
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+    
+    <title>Cadastro anotação</title>
+</head>
+<body>
+    <header>    
+        <nav class="navbar navbar-dark bg-primary navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand" href="javascript:;">Caderno de Anotações</a>
+                
+                <button class="navbar-toggler" type="button" data-toggle="collapse" 
+                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" 
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="javascript:;"
+                                th:href="@{/anotacoes}">Lista</a>
+                        </li>
+                          
+                        <li class="nav-item">
+                            <a class="nav-link" href="javascript:;"
+                                th:href="@{/anotacoes/nova}">Nova</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+        
+    <main role="main">
+          <th:block layout:fragment="conteudo">
+        <section class="my-4">
+            <div class="container">
+                <h2>Cadastro anotação</h2>
+            </div>
+        </section>
+    
+        <section>            
+            <div class="container">
+                <form method="post" th:object="${anotacao}"
+                    th:action="${#httpServletRequest.getServletPath()}">
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert"
+                        th:if="${#fields.hasAnyErrors()}">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        
+                        <div th:each="erro: ${#fields.detailedErrors()}">
+                            <span th:text="${erro.message}">Mensagem de validação.</span>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-success alert-dismissible fade show" role="alert"
+                        th:if="${!#strings.isEmpty(mensagem)}">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        
+                        <span th:text="${mensagem}">Mensagem de sucesso.</span>                       
+                    </div>
+                    
+                    <div class="form-group"
+                        th:if="${anotacao.id}">
+                        <label for="id">Código</label> 
+                        <input type="text" class="form-control-plaintext" disabled 
+                            th:field="*{id}"/>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="titulo">Título</label> 
+                        <input type="text" class="form-control"
+                            placeholder="Título"
+                            th:field="*{titulo}"/>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="conteudo">Conteúdo</label> 
+                        <textarea class="form-control" placeholder="Conteúdo"
+                            rows="5"
+                            th:field="*{conteudo}"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </form>
+            </div>    
+        </section>
+    </th:block>
+
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
 import javax.validation.constraints.NotBlank;
 
 @Entity
@@ -22,6 +23,11 @@ public class Anotacao {
 
 	private LocalDateTime cadastro;
 
+	@PrePersist
+	private void prePersist() {
+		this.cadastro = LocalDateTime.now();
+	}
+	
 	public Long getId() {
 		return id;
 	}
