@@ -22,13 +22,34 @@ public class AnotacoesController {
 	@Autowired
 	private AnotacaoRepository repository;
 
+	@Autowired
+	private AnotacaoService service;
+
+	@PostMapping("/{id}/editar")
+	public ModelAndView atualizar(@PathVariable Long id, 
+			@Valid Anotacao anotacao,
+			BindingResult bindingResult,
+			RedirectAttributes redirectAttributes) {
+		if (bindingResult.hasErrors()) {
+			return nova(anotacao);
+		}
+
+		service.atualizar(id, anotacao);
+
+		redirectAttributes.addFlashAttribute("mensagem", "Anotação atualizada com sucesso!");
+
+		return new ModelAndView("redirect:/anotacoes/nova");
+
+	}
+
 	@GetMapping("/{id}/editar")
 	public ModelAndView editar(@PathVariable Long id) {
 		return nova(repository.getOne(id));
 	}
-
+	
 	@PostMapping("/nova")
-	public ModelAndView criar(@Valid Anotacao anotacao, BindingResult bindingResult,
+	public ModelAndView criar(@Valid Anotacao anotacao,
+			BindingResult bindingResult,
 			RedirectAttributes redirectAttributes) {
 		if (bindingResult.hasErrors()) {
 			return nova(anotacao);
@@ -41,6 +62,7 @@ public class AnotacoesController {
 		return new ModelAndView("redirect:/anotacoes/nova");
 
 	}
+	
 
 	@GetMapping("/nova")
 	public ModelAndView nova(Anotacao anotacao) {
